@@ -1,0 +1,308 @@
+Question 1- Write a Python program to check that a string contains only a certain set of characters (in this case a-z, A-Z and 0-9).
+
+import re
+
+x = "Hello Data Science DS2306 and"
+y = re.compile('[^0-9A-Za-z ]+')
+z = y.search(x)
+if z:
+    print('the string contains', z.group())
+else:
+    print('The string contains only digits 0-9 and letters of english alphabet')
+
+
+Question 2- Create a function in python that matches a string that has an a followed by zero or more b's
+
+import re
+x = "Hello Data Science DS2306"
+y = re.compile('ab*?')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('no match found')
+
+Question 3-  Create a function in python that matches a string that has an a followed by one or more b's
+
+import re
+x = "Hello Data Science DS2306 ab"
+y = re.compile('ab+')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 4- Create a function in Python and use RegEx that matches a string that has an a followed by zero or one 'b'.
+
+import re
+x = "Hello Data Science DS2306"
+y = re.compile('ab')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 5- Write a Python program that matches a string that has an a followed by three 'b'.
+
+import re
+x = "Hello Data Science DS2306 abbb"
+y = re.compile('ab{3}')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 6- Write a regular expression in Python to split a string into uppercase letters.
+Sample text: “ImportanceOfRegularExpressionsInPython”
+Output: [‘Importance’, ‘Of’, ‘Regular’, ‘Expression’, ‘In’, ‘Python’]
+
+import re
+text = 'ImportanceOfRegularExpressionsInPython'
+print(re.findall('[A-Z][^A-Z]*', text))
+
+Question 7- Write a Python program that matches a string that has an a followed by two to three 'b'.
+
+import re
+x = "Hello Data Science DS2306 abb"
+y = re.compile('ab{2,3}')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 8- Write a Python program to find sequences of lowercase letters joined with a underscore.
+
+import re
+x = "Hello Data Science DS2306 a_b"
+y = re.compile('[a-z]+_[a-z]+')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 9- Write a Python program that matches a string that has an 'a' followed by anything, ending in 'b'.
+
+import re
+x = "Hello Data Science DS2306"
+y = re.compile('a.*b$')
+z = y.search(x)
+if z:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 10- Write a Python program that matches a word at the beginning of a string.
+
+import re
+x = "Hello Data Science DS2306"
+pattern = re.match('^\w+', x)
+if pattern:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 11- Write a Python program to match a string that contains only upper and lowercase letters, numbers, and underscores.
+
+import re
+x = "AsasasA%%"
+y = re.search('[^0-9A-Za-z_]+', x)
+if y:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 12- Write a Python program where a string will start with a specific number. 
+
+import re
+x = "3-12345678"
+y = "3-12345678"
+m = re.match(x,y)
+if m:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 13- Write a Python program to remove leading zeros from an IP address
+
+import re
+
+x = "180.10.20.03"
+pattern = re.sub('\.0*', '.', x)
+print(pattern)
+
+Question 14- Write a regular expression in python to match a date string in the form of Month name followed by day number and year stored in a text file.
+Sample text : ' On August 15th 1947 that India was declared independent from British colonialism, and the reins of control were handed over to the leaders of the Country’.
+Output- August 15th 1947
+Hint- Use re.match() method here
+
+
+Question 15- Write a Python program to search some literals strings in a string. Go to the editor
+Sample text : 'The quick brown fox jumps over the lazy dog.'
+Searched words : 'fox', 'dog', 'horse'
+
+import re
+my_string = 'The quick brown fox jumps over the lazy dog.'
+x = re.search('dog|fox|horse', my_string)
+if x:
+    print('its a match')
+else:
+    print('No match found')
+
+Question 16- Write a Python program to search a literals string in a string and also find the location within the original string where the pattern occurs
+Sample text : 'The quick brown fox jumps over the lazy dog.'
+Searched words : 'fox'
+
+import re
+my_string = 'The quick brown fox jumps over the lazy dog.'
+x = re.search('\Wfox\W', my_string)
+if x:
+    print('its a match starts on', x.start())
+else:
+    print('No match found')
+
+
+Question 17- Write a Python program to find the substrings within a string.
+Sample text : 'Python exercises, PHP exercises, C# exercises'
+Pattern : 'exercises'.
+
+import re
+my_string = 'Python exercises, PHP exercises, C# exercises'
+my_substring = 'exercises'
+x = re.findall(my_substring, my_string)
+if x:
+    print('its a match', len(x))
+else:
+    print('No match found')
+
+
+Question 18- Write a Python program to find the occurrence and position of the substrings within a string.
+
+import re
+my_string = 'Python exercises, PHP exercises, C# exercises'
+my_substring = 'exercises'
+x = re.finditer(my_substring, my_string)
+for match in x:
+    print('string \'{}\''.format(my_substring), 'found at position', match.span())
+
+Question 19- Write a Python program to convert a date of yyyy-mm-dd format to dd-mm-yyyy format.
+
+import re
+curr_date = '2023-07-15'
+x = re.split('-', curr_date)
+new_date = '-'.join(x[::-1])
+print(new_date)
+
+Question 20- Write a Python program to find all words starting with 'a' or 'e' in a given string.
+
+import re
+
+text = "The following example creates an ArrayList with a capacity of 50 elements. Four elements are then added to the ArrayList and the ArrayList is trimmed accordingly."
+x = re.findall("[ae]\w+", text)
+print(x)
+
+Question 21- Write a Python program to separate and print the numbers and their position of a given string.
+
+import re
+
+text = "The following example creates an ArrayList with a capacity of 50 elements. Four elements are then added to the ArrayList and the ArrayList is trimmed accordingly."
+
+for x in re.finditer("\d+", text):
+    print(x.group(0))
+    print("Index position : ", x.start())
+
+Question 22- Write a regular expression in python program to extract maximum numeric value from a string
+
+import re
+
+string='Hello123Data Science DS2306'
+number = re.findall('\d+', string)
+number = map(int, number)
+print("Max_value :", max(number))
+
+Question 23- Write a Regex in Python to put spaces between words starting with capital letters
+
+import re
+
+def capital_words_spaces(str1):
+  return re.sub(r"(\w)([A-Z])", r"\1 \2", str1)
+
+print(capital_words_spaces("HelloDataScienceDS2306"))
+
+Question 24- Python regex to find sequences of one upper case letter followed by lower case letters
+
+import re 
+def search(x): 
+    pattern = '[A-Z]+[a-z]+$'
+    if re.search(pattern, x): 
+        print('Yes, the required sequence exists!')
+    else: 
+         print('No, the required sequence does not exists!')
+x = input("Enter the string : ")
+search(x)
+
+
+Question 25- Write a Python program to remove duplicate words from Sentence using Regular Expression
+
+import re
+
+def RemoveDuplicateWords(x):
+ 
+    regex = r'\b(\w+)(?:\W+\1\b)+'
+ 
+    return re.sub(regex, r'\1', x, flags=re.IGNORECASE)
+
+text = "Hello Hello Data Science DS2306 DS2306"
+print(RemoveDuplicateWords(text))
+
+Question 26-  Write a python program using RegEx to accept string ending with alphanumeric character.
+
+import re 
+def check(text):  
+    pattern = '[a-zA-z0-9]$'
+    if(re.search(pattern, text)):  
+        return "The required condition exists"  
+          
+    else:  
+        return "The required condition does not exists"      
+      
+text = input("Enter the string : ")
+print(check(text))
+
+
+Question 27-Write a python program using RegEx to extract the hashtags.
+Sample Text: text = """RT @kapil_kausik: #Doltiwal I mean #xyzabc is "hurt" by #Demonetization as the same has rendered USELESS <ed><U+00A0><U+00BD><ed><U+00B1><U+0089> "acquired funds" No wo"""
+Output: ['#Doltiwal', '#xyzabc', '#Demonetization']
+
+import re
+s = """RT @kapil_kausik: #Doltiwal I mean #xyzabc is "hurt" by #Demonetization as the same has rendered USELESS <ed><U+00A0><U+00BD><ed><U+00B1><U+0089> "acquired funds" No wo"""
+re.findall(r"#(\w+)", s)
+
+Question 28- Write a python program using RegEx to remove <U+..> like symbols
+Check the below sample text, there are strange symbols something of the sort <U+..> all over the place. You need to come up with a general Regex expression that will cover all such symbols.
+Sample Text: "@Jags123456 Bharat band on 28??<ed><U+00A0><U+00BD><ed><U+00B8><U+0082>Those who  are protesting #demonetization  are all different party leaders"
+Output: @Jags123456 Bharat band on 28??<ed><ed>Those who  are protesting #demonetization  are all different party leaders
+	
+Question 29- Write a python program to extract dates from the text stored in the text file.
+Sample Text: Ron was born on 12-09-1992 and he was admitted to school 15-12-1999.
+Store this sample text in the file and then extract dates.
+
+import re
+
+f = open("doc.txt", "r")
+file1 = f.read()
+pattern = "\d{2}[/-]\d{2}[/-]\d{4}"
+dates = re.findall(pattern, file1)
+print(dates)
+
+Question 30- Write a Python program to replace all occurrences of a space, comma, or dot with a colon.
+Sample Text- 'Python Exercises, PHP exercises.'
+Output: Python:Exercises::PHP:exercises:
+
+import re
+text = 'Python Exercises, PHP exercises.'
+print(re.sub("[ ,.]", ":", text))
