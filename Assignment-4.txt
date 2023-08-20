@@ -1,0 +1,365 @@
+Que-1)
+
+Ans :-
+
+import selenium
+import pandas as pd
+import time
+import requests
+import re
+from selenium import webdriver
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+
+driver = webdriver.Chrome()
+driver.get("https://en.wikipedia.org/wiki/List_of_most-viewed_YouTube_videos")
+time.sleep(3)
+
+Rank = []
+Name = []
+Artist = []
+Upload_date = []
+Views = []
+
+#Scraping data of rank details
+
+try:
+    for i in driver.find_elements_by_xpath("//table[@class='wikitable sortable jquery-tablesorter']//tbody//tr//td[1]")[:30]:
+        Rank.append(i.text)
+except NoSuchElementException:
+    Rank.append('-')
+
+#Scraping data of video names
+try:
+    for i in driver.find_elements_by_xpath("//table[@class='wikitable sortable jquery-tablesorter']//tbody//tr//td[2]")[:30]:
+        Name.append(i.text)
+except NoSuchElementException:
+    Name.append('-')
+
+#Scraping data of artist name
+try:
+    for i in driver.find_elements_by_xpath("//table[@class='wikitable sortable jquery-tablesorter']//tbody//tr//td[3]")[:30]:
+        Artist.append(i.text)
+except NoSuchElementException:        
+    Artist.append('-')
+
+#Scraping data of upload dates
+try:
+    for i in driver.find_elements_by_xpath("//table[@class='wikitable sortable jquery-tablesorter']//tbody//tr//td[5]")[:30]:
+        Upload_date.append(i.text)
+except NoSuchElementException:        
+    Upload_date.append('-')
+
+#Scraping data of views
+try:
+    for i in driver.find_elements_by_xpath("//table[@class='wikitable sortable jquery-tablesorter']//tbody//tr//td[4]")[:30]:
+        Views.append(i.text)
+except NoSuchElementException:
+    Views.append('-')
+
+#DATA FRAMEING
+Youtube=pd.DataFrame({})
+Youtube['Rank'] = Rank
+Youtube['Name'] = Name
+Youtube['Artist'] = Artist
+Youtube['Uploaded Date'] = Upload_date
+Youtube['Views'] = Views
+
+#Printing data frame
+Youtube
+
+Que-2)
+
+Ans :-
+
+driver = webdriver.Chrome()
+driver.get("https://www.bcci.tv/")
+time.sleep(3)
+
+#Getting url for international fixture and clicking on it
+Options_btn = driver.find_element_by_xpath("//div[@class='navigation__drop-down drop-down drop-down--reveal-on-hover']").click()
+
+Infix_btn = driver.find_element_by_xpath("//a[@class='navigation__link navigation__link--in-drop-down']").click()
+time.sleep(5)
+
+#Creating empty list
+Match_title = []
+Series = []
+Place = []
+Date = []
+Time = []
+
+#Scraping data of match title
+for i in driver.find_elements_by_xpath("//strong[@class='fixture__name fixture__name--with-margin']"):
+    Match_title.append(i.text)
+    
+#Scraping data of Place
+for i in driver.find_elements_by_xpath("//p[@class='fixture__additional-info']//span"):
+    Place.append(i.text)
+    
+#for scraping date and time we have go into each title    
+
+#Scraping url for each match
+mat_url = []
+urls = driver.find_elements_by_xpath("//div[@class='js-list']//a")
+for i in urls:
+    mat_url.append(i.get_attribute("href"))
+    
+#Now scraping date, time and series
+for i in mat_url:
+    driver.get(i)
+    time.sleep(8)
+    
+    
+    #Scraping data of Series
+    try:
+        series = driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/section[3]/div/ul/li[1]/span[2]")
+        Series.append(series.text)
+    except NoSuchElementException:
+        Series.append('-')
+        
+    #Scraping data of dates
+    try:
+        date = driver.find_element_by_xpath("//div[@class='mc-header-scorebox__datetime']//strong")
+        Date.append(date.text)
+    except NoSuchElementException:
+        Date.append('-')
+        
+    #Scraping data of time
+    try:
+        times = driver.find_element_by_xpath("//span[@class='mc-header-scorebox__ist-time']")
+        Time.append(times.text)
+    except NoSuchElementException:
+        Time.append('-')
+
+#DATA FRAMEING
+BCCI=pd.DataFrame({})
+BCCI['Match Title'] = Match_title
+BCCI['Series'] = Series
+BCCI['Place'] = Place
+BCCI['Date'] = Date
+BCCI['Time'] = Time
+
+#Printing data frame
+BCCI
+
+Que-3)
+
+Ans:-
+
+driver = webdriver.Chrome()
+driver.get("http://statisticstimes.com/")
+time.sleep(3)
+
+#Clicking on economy section
+economy = driver.find_element_by_xpath("//div[@class='navbar']//div[2]//button").click()
+
+urls = driver.find_element_by_xpath("//div[@class='dropdown-content']//a[3]")
+ineco_page = urls.get_attribute("href")
+
+#Going to indian economy page
+driver.get(ineco_page)  
+time.sleep(5)
+
+#Creating empty list
+Rank = []
+State = []
+GSDP_1 = []
+GSDP_2 = []
+Share = []
+GDP = []
+
+#get the url of page containing GDP of indian states
+sta_GDP = driver.find_element_by_xpath("//ul[@style='list-style-type:none;margin-left:20px;']/li/a")
+GDP_url = sta_GDP.get_attribute("href")
+
+driver.get(GDP_url)
+time.sleep(6)
+
+
+#Scraping data of rank
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[1]"):
+    Rank.append(i.text)
+
+    
+#Scraping data of state name
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[2]"):
+    State.append(i.text)
+
+    
+# Scraping data of GSDP at current price (19-20)
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[3]"):
+    GSDP_1.append(i.text)
+
+    
+#Scraping data of GSDP at current price (18-19)
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[4]"):
+    GSDP_2.append(i.text)
+
+    
+#Scraping data of Share(18-19)
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[5]"):
+    Share.append(i.text)
+
+    
+#Scraping data of GDP($ billion)
+for i in driver.find_elements_by_xpath("//div[@id='table_id_wrapper']//tbody//tr//td[6]"):
+    GDP.append(i.text)
+
+#DATA FRAMEING
+StatisticsTime=pd.DataFrame({})
+StatisticsTime['Rank'] = Rank
+StatisticsTime['State'] = State
+StatisticsTime['GSDP at current price (19-20)'] = GSDP_1
+StatisticsTime['GSDP at current price (18-19)'] = GSDP_2
+StatisticsTime['Share(18-19)'] = Share
+StatisticsTime['GDP($ billion)'] = GDP
+
+#Printing the data frame
+StatisticsTime
+
+Que-4)
+
+Ans:-
+
+#Activating the chrome browser
+driver = webdriver.Chrome("chromedriver.exe")
+
+#getting the specified url
+url = "https://github.com/"
+driver.get(url)
+time.sleep(3)
+
+#Getting explore button and clicking on it
+explore = driver.find_element_by_xpath("/html/body/div[1]/header/div/div[2]/nav/ul/li[4]/details").click()
+
+#Selecting trending option
+trend_url = driver.find_element_by_xpath("/html/body/div[1]/header/div/div[2]/nav/ul/li[4]/details/div/ul[2]/li[3]/a")
+urls = trend_url.get_attribute("href")
+driver.get(urls)
+
+#Creating empty list
+repo_urls = []
+rep_title = []
+Description = []
+Contributors = []
+Language = []
+lang = []
+
+#Fetching urls for each repository
+repository = driver.find_elements_by_xpath("//h1[@class = 'h3 lh-condensed']//a")
+for i in repository:
+    repo_urls.append(i.get_attribute("href"))
+
+    
+#Scraping data of repository title
+title = driver.find_elements_by_xpath("//h1[@class = 'h3 lh-condensed']")
+for i in title:
+    rep_title.append(i.text)
+
+    
+#Scraping data from every repository page
+for i in repo_urls:
+    driver.get(i)
+    time.sleep(3)
+    
+    
+    #Scraping data of decription
+    try:
+        desc = driver.find_element_by_xpath("//p[@class='f4 mt-3']")
+        Description.append(desc.text)
+    except NoSuchElementException:
+        Description.append('-')
+        
+        
+    #Scraping data of contributors
+    try:
+        cont_tags = driver.find_element_by_xpath("//*[contains(text(),'    Contributors ')]")
+        Contributors.append(cont_tags.text.replace('Contributors',''))
+    except NoSuchElementException:
+        Contributors.append('-')
+        
+        
+    #fetching Languages used
+    try:
+        for i in driver.find_elements_by_xpath("//span[@class='color-text-primary text-bold mr-1']"):
+            lang.append(i.text)
+        Language.append(lang)
+    except NoSuchElementException:
+        Language.append('-')
+
+#DATA FRAMEING
+Github=pd.DataFrame({})
+Github['Repository title'] = rep_title
+Github['Repository description'] = Description
+Github['Contributors count'] = Contributors
+Github['Language used'] = Language
+
+#Printing data frame
+Github
+
+Que-5)
+
+Ans:-
+
+#Activating the chrome browser
+driver = webdriver.Chrome("chromedriver.exe")
+
+#getting the specified url
+url = "https://www.billboard.com/"
+driver.get(url)
+time.sleep(3)
+
+#Clicking on charts
+charts=driver.find_element_by_xpath("/html/body/div[2]/div[2]/div[2]/header/div/ul/li[1]").click()
+
+#Creating empty list
+Name = []
+Artist = []
+Last_week_rank = []
+Peak_rank = []
+Weeks_on_board = []
+
+#Getting url for top 100 
+urls = driver.find_element_by_xpath("//div[@class='charts-landing first-group']//div//a")
+page_url = urls.get_attribute("href")
+driver.get(page_url)
+time.sleep(4)
+
+
+#Now we have to extract required info from page url
+#Scraping data of song names
+for i in driver.find_elements_by_xpath("//span[@class='chart-element__information__song text--truncate color--primary']"):
+    Name.append(i.text)
+
+    
+#Scraping data of artist names
+for i in driver.find_elements_by_xpath("//span[@class='chart-element__information__artist text--truncate color--secondary']"):
+    Artist.append(i.text)
+
+    
+#Scraping data of last week ranks
+for i in driver.find_elements_by_xpath("//div[@class='chart-element__meta text--center color--secondary text--last']"):
+    Last_week_rank.append(i.text)
+
+    
+#Scraping data of peak rank
+for i in driver.find_elements_by_xpath("//div[@class='chart-element__meta text--center color--secondary text--peak']"):
+    Peak_rank.append(i.text)
+
+    
+#Scraping data of weeks on board
+for i in driver.find_elements_by_xpath("//div[@class='chart-element__meta text--center color--secondary text--week']"):
+    Weeks_on_board.append(i.text)
+
+#DATA FRAMEING
+Billboard=pd.DataFrame({})
+Billboard['Name'] = Name
+Billboard['Artist'] = Artist
+Billboard['Last week rank'] = Last_week_rank
+Billboard['Peak rank'] = Peak_rank
+Billboard['Weeks on board'] = Weeks_on_board
+
+#Printing the dataframe
+Billboard
